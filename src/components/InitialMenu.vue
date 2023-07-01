@@ -26,7 +26,7 @@
       <button class="popup-btn" @click="showScrollableList">
         This Session's Nations
       </button>
-      <div class="popup-content" v-if="isScrollableListOpen" @click.stop="">
+      <div class="popup-content" :class="{ open: isScrollableListOpen }">
         <h2>Available Nations</h2>
         <ul>
           <li v-for="item in scrollableList" :key="item">{{ item }}</li>
@@ -43,7 +43,7 @@
       <button class="popup-btn" @click="showCheckboxMenu">
         This Session's Motions
       </button>
-      <div class="popup-content" v-if="isCheckboxMenuOpen" @click.stop="">
+      <div class="popup-content" :class="{ open: isCheckboxMenuOpen }">
         <h2>Available Motions</h2>
         <ul>
           <li v-for="element in checkboxMenu" :key="element">
@@ -62,10 +62,13 @@
 
     <!-- Submit button -->
     <button class="submit-btn" @click="submitForm">Submit</button>
+
+    <!-- Backdrop element -->
+    <div class="backdrop" v-if="isScrollableListOpen || isCheckboxMenuOpen" @click="closeMenus"></div>
   </div>
 </template>
-  
-  <script>
+
+<script>
 export default {
   data() {
     return {
@@ -78,16 +81,15 @@ export default {
       isScrollableListOpen: false,
       scrollableList: [],
       isCheckboxMenuOpen: false,
-      checkboxMenu: ["Moderated Caucus", "Unmoderated Caucus", "Consultation of the Whole"],
+      checkboxMenu: [
+        "Moderated Caucus",
+        "Unmoderated Caucus",
+        "Consultation of the Whole",
+        // Unlike lists of nations, we must make this list comprehensive since users cannot define the actual logic behind motions
+      ],
       selectedElements: [],
-      newItem: ''
+      newItem: "",
     };
-  },
-  mounted() {
-    document.addEventListener("click", this.closeMenus);
-  },
-  unmounted() {
-    document.removeEventListener("click", this.closeMenus);
   },
   methods: {
     selectTemplate() {
@@ -100,7 +102,8 @@ export default {
           // Set values appropriately
           break;
         case "leagueNat1931":
-        //Set values appropriately
+          // Set values appropriately
+          break;
       }
     },
     showScrollableList() {
@@ -108,15 +111,14 @@ export default {
     },
     addItemToList() {
       this.scrollableList.push(this.newItem);
+      this.newItem = ''; // Clear the input field after adding item
     },
     showCheckboxMenu() {
       this.isCheckboxMenuOpen = true;
     },
-    closeMenus(event) {
-      if (!this.$el.contains(event.target)) {
+    closeMenus() {
         this.isScrollableListOpen = false;
         this.isCheckboxMenuOpen = false;
-      }
     },
     submitForm() {
       // Logic for submitting the form
@@ -124,8 +126,8 @@ export default {
   },
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 /* Styles for the menu component... */
 
 .dropdown {
@@ -153,6 +155,14 @@ export default {
   padding: 10px;
   background-color: #f9f9f9;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s;
+}
+
+.popup-content.open {
+  visibility: visible;
+  opacity: 1;
 }
 
 .popup-content h2 {
@@ -179,5 +189,17 @@ export default {
   color: #fff;
   cursor: pointer;
 }
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
-  
