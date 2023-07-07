@@ -1,14 +1,14 @@
 <template>
-  <initial-menu></initial-menu>
+  <test :startTime="10"></test>
 </template>
 
 <script>
-import InitialMenu from './components/InitialMenu.vue'
+import test from './components/BigClock.vue'
 
 export default {
   name: 'App',
   components: {
-    InitialMenu
+    test
   }
 }
 </script>
