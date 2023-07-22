@@ -2,6 +2,7 @@
   <div>
     <h1 :style="flashStyle">{{ minutes }}:{{ seconds }}</h1>
     <button @click="togglePlaying">{{ playingIcon }}</button>
+    <button @click="nextSpeaker">Next Speaker</button>
   </div>
 </template>
   
@@ -37,7 +38,7 @@ export default {
       return {
         color: this.isFlashing ? "red" : "black",
       };
-    },
+    }
   },
   methods: {
     // Just something to note - since this only considers seconds, if a user pauses midway through a second and then resumes the countdown, the whole second has to pass before continuing.
@@ -67,10 +68,21 @@ export default {
       clearInterval(this.flashInterval);
       this.isFlashing = false;
     },
+    nextSpeaker() {
+      this.stopFlashing();
+      this.isPlaying = false;
+      clearInterval(this.timerInterval);
+      this.time = this.startTime;
+      this.$emit('next-speaker');
+    }
   },
 };
 </script>
   
   <style scoped>
+    h1 {
+      font-size: 100px;
+      margin: 0;
+    }
 </style>
   
