@@ -9,11 +9,32 @@
             v-for="motion in raisedMotions"
             :key="motion"
           >
-            <div class="card-body">
+            <div class="card-header">
               <h3 class="card-title">{{ motion.name }}</h3>
-              <h4 class="card-subtitle">{{ motion.country }}</h4>
-              <h4 class="card-subtitle">{{ motion.totalTime }}</h4>
-              <h4 class="card-subtitle">{{ motion.speakingTime }}</h4>
+              <h5 class="card-subtitle text-body-secondary">
+                {{ motion.topic }}
+              </h5>
+            </div>
+            <div class="card-body">
+              <h5 class="card-subtitle">
+                {{ motion.proposingCountry.officialName }}
+              </h5>
+              <h5 class="card-subtitle">
+                {{ motion.totalTime[0] }}:{{
+                  String(motion.totalTime[1]).padStart(2, "0")
+                }}
+              </h5>
+              <h5 class="card-subtitle">
+                {{ motion.speakingTime[0] }}:{{
+                  String(motion.speakingTime[1]).padStart(2, "0")
+                }}
+              </h5>
+            </div>
+            <div class="card-footer">
+              <div class="btn-group">
+                <a href="#" class="btn btn-success">Accept</a>
+                <a href="#" class="btn btn-danger" @click="rejectMotion(motion)">Reject</a>
+              </div>
             </div>
           </div>
         </div>
@@ -46,7 +67,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title">{{ proposedMotion }}</h1>
+            <h1 class="modal-title">{{ proposedMotion.name }}</h1>
             <button
               type="button"
               class="btn-close"
@@ -55,14 +76,18 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form>
+            <div>
               <div class="form-group">
                 <label for="proposedBy">Proposed by:</label>
-                <select class="form-control" id="proposedBy">
+                <select
+                  class="form-control"
+                  id="proposedBy"
+                  v-model="proposedMotion.proposingCountry"
+                >
                   <option
                     v-for="country in presentCountries"
                     :key="country"
-                    :value="country.officialName"
+                    :value="country"
                     :data-mdb-icon="country.imageSrc"
                   >
                     {{ country.officialName }}
@@ -78,12 +103,14 @@
                       class="form-control"
                       id="totalTimeMinutes"
                       placeholder="Minutes"
+                      v-model="proposedMotion.totalTime[0]"
                     />
                     <input
                       type="number"
                       class="form-control"
                       id="totalTimeSeconds"
                       placeholder="Seconds"
+                      v-model="proposedMotion.totalTime[1]"
                     />
                   </div>
                 </div>
@@ -95,12 +122,14 @@
                       class="form-control"
                       id="speakingTimeMinutes"
                       placeholder="Minutes"
+                      v-model="proposedMotion.speakingTime[0]"
                     />
                     <input
                       type="number"
                       class="form-control"
                       id="speakingTimeSeconds"
                       placeholder="Seconds"
+                      v-model="proposedMotion.speakingTime[1]"
                     />
                   </div>
                 </div>
@@ -112,10 +141,17 @@
                   class="form-control"
                   id="topic"
                   placeholder="Enter the topic"
+                  v-model="proposedMotion.topic"
                 />
               </div>
-              <button type="submit" class="btn btn-primary">Add Motion</button>
-            </form>
+              <button
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                @click="submitMotion"
+              >
+                Add Motion
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -128,7 +164,13 @@ export default {
   data() {
     return {
       raisedMotions: [],
-      proposedMotion: ""
+      proposedMotion: {
+        name: "",
+        proposingCountry: null,
+        totalTime: [0, 0],
+        speakingTime: [0, 0],
+        topic: "",
+      },
     };
   },
   props: {
@@ -145,9 +187,22 @@ export default {
   },
   methods: {
     proposeMotion(motionName) {
-        this.proposedMotion = motionName
+      this.proposedMotion.name = motionName;
+    },
+    submitMotion() {
+      this.raisedMotions.push(this.proposedMotion);
+      this.proposedMotion = {
+        name: "",
+        proposingCountry: "",
+        totalTime: [0, 0],
+        speakingTime: [0, 0],
+        topic: "",
+      };
+    },
+    rejectMotion(motion) {
+      this.raisedMotions = this.raisedMotions.splice(this.raisedMotions.indexOf(motion), -1)
     }
-  }
+  },
 };
 </script>
   
