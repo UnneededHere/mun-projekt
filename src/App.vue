@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import test from "./components/Motions.vue";
+import test from "./components/Interface.vue";
 
 export default {
   name: "App",

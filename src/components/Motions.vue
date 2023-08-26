@@ -24,7 +24,7 @@
                   String(motion.totalTime[1]).padStart(2, "0")
                 }}
               </h5>
-              <h5 class="card-subtitle">
+              <h5 class="card-subtitle" v-if="motion.name == 'Moderated Caucus'">
                 {{ motion.speakingTime[0] }}:{{
                   String(motion.speakingTime[1]).padStart(2, "0")
                 }}
@@ -123,6 +123,7 @@
                       id="speakingTimeMinutes"
                       placeholder="Minutes"
                       v-model="proposedMotion.speakingTime[0]"
+                      :disabled="proposedMotion.name != 'Moderated Caucus'"
                     />
                     <input
                       type="number"
@@ -130,6 +131,7 @@
                       id="speakingTimeSeconds"
                       placeholder="Seconds"
                       v-model="proposedMotion.speakingTime[1]"
+                      :disabled="proposedMotion.name != 'Moderated Caucus'"
                     />
                   </div>
                 </div>

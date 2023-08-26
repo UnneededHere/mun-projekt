@@ -9,26 +9,16 @@ import CountryList from "./CountryList.vue";
 
 export default {
   name: "Session",
+  props: {
+    presentCountries: Array
+  },
   components: {
     BigClock,
     CountryList,
   },
   data() {
     return {
-      countryList: [
-        {
-          officialName: "Russian Federation",
-          imageSrc: "https://cdn-icons-png.flaticon.com/512/551/551878.png ",
-        },
-        {
-          officialName: "State of Israel",
-          imageSrc: "https://cdn-icons-png.flaticon.com/512/552/552046.png",
-        },
-        {
-          officialName: "Republic of Austria",
-          imageSrc: "https://cdn-icons-png.flaticon.com/512/551/551917.png",
-        },
-      ],
+      countryList: this.presentCountries
     };
   },
   methods: {
