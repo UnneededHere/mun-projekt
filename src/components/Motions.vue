@@ -133,7 +133,7 @@
                       id="speakingTimeMinutes"
                       placeholder="Minutes"
                       v-model="proposedMotion.speakingTime[0]"
-                      :disabled="proposedMotion.name != 'Moderated Caucus'"
+                      :disabled="noSpeakingTime(proposedMotion)"
                     />
                     <input
                       type="number"
@@ -141,7 +141,7 @@
                       id="speakingTimeSeconds"
                       placeholder="Seconds"
                       v-model="proposedMotion.speakingTime[1]"
-                      :disabled="proposedMotion.name != 'Moderated Caucus'"
+                      :disabled="noSpeakingTime(proposedMotion)"
                     />
                   </div>
                 </div>
@@ -217,7 +217,13 @@ export default {
         -1
       );
     },
+    noSpeakingTime(motion) {
+      return motion.name != 'Moderated Caucus'
+    },
     acceptMotion(motion) {
+      if (this.noSpeakingTime(motion)) {
+        motion.speakingTime = motion.totalTime
+      }
       this.$emit("new-motion", motion);
     },
   },

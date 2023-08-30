@@ -5,6 +5,7 @@
     @next-speaker="nextSpeaker"
     :startTime="convertToSeconds(currentMotion.speakingTime)"
     :maxTime="convertToSeconds(currentMotion.totalTime)"
+    :motionType="this.motion.name"
   >
   </BigClock>
   <CountryList v-if="motionHasCountries" :propList="countryList"> </CountryList>

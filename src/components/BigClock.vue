@@ -1,9 +1,13 @@
 <template>
   <div>
     <h1 :style="flashStyle">{{ minutes(time) }}:{{ seconds(time) }}</h1>
-    <h5>{{ minutes(totalTime) }}:{{ seconds(totalTime) }}</h5>
+    <h5 v-if="smallClockNeeded">
+      {{ minutes(totalTime) }}:{{ seconds(totalTime) }}
+    </h5>
     <button @click="togglePlaying">{{ playingIcon }}</button>
-    <button @click="nextSpeaker">Next Speaker</button>
+    <button @click="nextSpeaker" :disabled="!nextSpeakerNeeded">
+      Next Speaker
+    </button>
   </div>
 </template>
   
@@ -22,6 +26,7 @@ export default {
   props: {
     startTime: Number,
     maxTime: Number,
+    motionType: String,
   },
   computed: {
     playingIcon() {
@@ -31,6 +36,14 @@ export default {
       return {
         color: this.isFlashing ? "red" : "black",
       };
+    },
+    smallClockNeeded() {
+      return this.motionType == "Moderated Caucus";
+    },
+    nextSpeakerNeeded() {
+      {
+        return this.motionType == "Moderated Caucus";
+      }
     },
   },
   methods: {
