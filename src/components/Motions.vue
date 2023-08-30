@@ -24,7 +24,10 @@
                   String(motion.totalTime[1]).padStart(2, "0")
                 }}
               </h5>
-              <h5 class="card-subtitle" v-if="motion.name == 'Moderated Caucus'">
+              <h5
+                class="card-subtitle"
+                v-if="motion.name == 'Moderated Caucus'"
+              >
                 {{ motion.speakingTime[0] }}:{{
                   String(motion.speakingTime[1]).padStart(2, "0")
                 }}
@@ -32,8 +35,15 @@
             </div>
             <div class="card-footer">
               <div class="btn-group">
-                <a href="#" class="btn btn-success">Accept</a>
-                <a href="#" class="btn btn-danger" @click="rejectMotion(motion)">Reject</a>
+                <a
+                  href="#"
+                  class="btn btn-success"
+                  @click="acceptMotion(motion)"
+                  >Accept</a
+                >
+                <a href="#" class="btn btn-danger" @click="rejectMotion(motion)"
+                  >Reject</a
+                >
               </div>
             </div>
           </div>
@@ -202,8 +212,14 @@ export default {
       };
     },
     rejectMotion(motion) {
-      this.raisedMotions = this.raisedMotions.splice(this.raisedMotions.indexOf(motion), -1)
-    }
+      this.raisedMotions = this.raisedMotions.splice(
+        this.raisedMotions.indexOf(motion),
+        -1
+      );
+    },
+    acceptMotion(motion) {
+      this.$emit("new-motion", motion);
+    },
   },
 };
 </script>

@@ -18,17 +18,35 @@
       >
     </li>
   </ul>
-  <Session :presentCountries="presentCountries" v-if="isSession"></Session>
-  <Motions :possibleMotions="possibleMotions" :presentCountries="presentCountries" v-if="!isSession"></Motions>
+  <Session
+    :presentCountries="presentCountries"
+    v-if="isSession"
+    :currentMotion="currentMotion"
+  ></Session>
+  <Motions
+    :possibleMotions="possibleMotions"
+    :presentCountries="presentCountries"
+    v-if="!isSession"
+    @new-motion="newMotion"
+  ></Motions>
 </template>
 <script>
 import Session from "./Session.vue";
-import Motions from './Motions.vue';
+import Motions from "./Motions.vue";
 export default {
   components: { Session, Motions },
   data() {
     return {
       isSession: true,
+      currentMotion: {
+        name: "",
+        proposingCountry: {
+          officialName: "N/A"
+        },
+        totalTime: [0, 0],
+        speakingTime: [0, 0],
+        topic: "No Motion Defined",
+      },
     };
   },
   props: {
@@ -38,6 +56,10 @@ export default {
   methods: {
     switchPage(pageIdenitifier) {
       this.isSession = pageIdenitifier;
+    },
+    newMotion(motion) {
+      this.currentMotion = motion;
+      this.isSession = true;
     },
   },
 };

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1 :style="flashStyle">{{ minutes }}:{{ seconds }}</h1>
+    <h1 :style="flashStyle">{{ minutes(time) }}:{{ seconds(time) }}</h1>
+    <h5>{{ minutes(totalTime) }}:{{ seconds(totalTime) }}</h5>
     <button @click="togglePlaying">{{ playingIcon }}</button>
     <button @click="nextSpeaker">Next Speaker</button>
   </div>
@@ -11,6 +12,7 @@ export default {
   data() {
     return {
       time: this.startTime,
+      totalTime: this.maxTime,
       isPlaying: false,
       timerInterval: null,
       flashInterval: null,
@@ -19,34 +21,36 @@ export default {
   },
   props: {
     startTime: Number,
+    maxTime: Number,
   },
   computed: {
     playingIcon() {
       return this.isPlaying ? "⏸" : "▶";
     },
-    minutes() {
-      const minutes = Math.floor(this.time / 60);
-
-      return String(minutes).padStart(2, "0");
-    },
-    seconds() {
-      const seconds = this.time % 60;
-
-      return String(seconds).padStart(2, "0");
-    },
     flashStyle() {
       return {
         color: this.isFlashing ? "red" : "black",
       };
-    }
+    },
   },
   methods: {
+    minutes(time) {
+      const minutes = Math.floor(time / 60);
+
+      return String(minutes).padStart(2, "0");
+    },
+    seconds(time) {
+      const seconds = time % 60;
+
+      return String(seconds).padStart(2, "0");
+    },
     // Just something to note - since this only considers seconds, if a user pauses midway through a second and then resumes the countdown, the whole second has to pass before continuing.
     togglePlaying() {
       if (!this.isPlaying && this.time > 0) {
         this.isPlaying = true;
         this.timerInterval = setInterval(() => {
           this.time -= 1;
+          this.totalTime -= 1;
           if (this.time == 0) {
             clearInterval(this.timerInterval);
             this.startFlashing();
@@ -72,17 +76,17 @@ export default {
       this.stopFlashing();
       this.isPlaying = false;
       clearInterval(this.timerInterval);
-      this.time = this.startTime;
-      this.$emit('next-speaker');
-    }
+      this.time = Math.min(this.startTime, this.totalTime);
+      this.$emit("next-speaker");
+    },
   },
 };
 </script>
   
   <style scoped>
-    h1 {
-      font-size: 100px;
-      margin: 0;
-    }
+h1 {
+  font-size: 100px;
+  margin: 0;
+}
 </style>
   

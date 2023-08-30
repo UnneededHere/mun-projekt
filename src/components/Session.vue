@@ -1,6 +1,13 @@
 <template>
-  <BigClock @next-speaker="nextSpeaker" :startTime="600"> </BigClock>
-  <CountryList :propList="countryList"> </CountryList>
+  <h3 class="text-secondary">{{ motion.topic }}</h3>
+  <h5 class="text-secondary">Proposed by: {{ motion.proposingCountry.officialName }}</h5>
+  <BigClock
+    @next-speaker="nextSpeaker"
+    :startTime="convertToSeconds(currentMotion.speakingTime)"
+    :maxTime="convertToSeconds(currentMotion.totalTime)"
+  >
+  </BigClock>
+  <CountryList v-if="motionHasCountries" :propList="countryList"> </CountryList>
 </template>
 
 <script>
@@ -10,7 +17,14 @@ import CountryList from "./CountryList.vue";
 export default {
   name: "Session",
   props: {
-    presentCountries: Array
+    presentCountries: Array,
+    currentMotion: {
+      name: String,
+      proposingCountry: Object,
+      totalTime: [Number, Number],
+      speakingTime: [Number, Number],
+      topic: String,
+    },
   },
   components: {
     BigClock,
@@ -18,13 +32,22 @@ export default {
   },
   data() {
     return {
-      countryList: this.presentCountries
+      countryList: this.presentCountries,
+      motion: this.currentMotion,
     };
   },
   methods: {
     nextSpeaker() {
-        this.countryList = this.countryList.slice(1)
-    }
-  }
+      this.countryList = this.countryList.slice(1);
+    },
+    convertToSeconds(timeArray) {
+      return timeArray[1] + timeArray[0] * 60;
+    },
+  },
+  computed: {
+    motionHasCountries() {
+      return this.motion.name == "Moderated Caucus";
+    },
+  },
 };
 </script>
