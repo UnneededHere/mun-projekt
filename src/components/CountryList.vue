@@ -95,6 +95,9 @@ export default {
     addSpeaker() {
       this.speakingCountries.push(this.newSpeaker);
     },
+    removeSpeaker() {
+      this.speakingCountries = this.speakingCountries.slice(1);
+    },
   },
 };
 </script>

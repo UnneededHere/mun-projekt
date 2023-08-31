@@ -8,7 +8,7 @@
     :motionType="this.motion.name"
   >
   </BigClock>
-  <CountryList v-if="motionHasCountries" :propList="countryList"> </CountryList>
+  <CountryList v-if="motionHasCountries" :propList="countryList" ref="countryList"> </CountryList>
 </template>
 
 <script>
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     nextSpeaker() {
-      this.countryList = this.countryList.slice(1);
+      this.$refs.countryList.removeSpeaker();
     },
     convertToSeconds(timeArray) {
       return timeArray[1] + timeArray[0] * 60;
