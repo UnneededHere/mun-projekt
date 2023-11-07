@@ -1,14 +1,14 @@
 <template>
-  <test :possibleMotions="motionsList" :presentCountries="countryList"></test>
+  <total :possibleMotions="motionsList" :presentCountries="countryList"></total>
 </template>
 
 <script>
-import test from "./components/Interface.vue";
+import total from "./components/BaseInterface.vue";
 
 export default {
   name: "App",
   components: {
-    test,
+    total,
   },
   data() {
     return {

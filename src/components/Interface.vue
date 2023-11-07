@@ -5,7 +5,7 @@
         :class="isSession ? 'nav-link active' : 'nav-link'"
         aria-current="page"
         href="#"
-        @click="switchPage(true)"
+        @click="switchTab(true)"
         >Session</a
       >
     </li>
@@ -13,7 +13,7 @@
       <a
         :class="isSession ? 'nav-link' : 'nav-link active'"
         href="#"
-        @click="switchPage(false)"
+        @click="switchTab(false)"
         >Motions</a
       >
     </li>
@@ -54,8 +54,8 @@ export default {
     presentCountries: Array,
   },
   methods: {
-    switchPage(pageIdenitifier) {
-      this.isSession = pageIdenitifier;
+    switchTab(tabIdenitifier) {
+      this.isSession = tabIdenitifier;
     },
     newMotion(motion) {
       this.currentMotion = motion;

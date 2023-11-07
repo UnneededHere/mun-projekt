@@ -81,15 +81,14 @@ export default {
       isScrollableListOpen: false,
       scrollableList: [],
       isCheckboxMenuOpen: false,
-      checkboxMenu: [
-        "Moderated Caucus",
-        "Unmoderated Caucus",
-        "Consultation of the Whole",
-        // Unlike lists of nations, we must make this list comprehensive since users cannot define the actual logic behind motions
-      ],
-      selectedElements: [],
+      checkboxMenu: this.allMotions,
+      selectedElements: this.allMotions,
       newItem: "",
     };
+  },
+  props: {
+    customCountries: Boolean,
+    allMotions: Array
   },
   methods: {
     selectTemplate() {
@@ -121,8 +120,13 @@ export default {
         this.isCheckboxMenuOpen = false;
     },
     submitForm() {
-      // Logic for submitting the form
+      this.$emit("set-motions", this.selectedElements);
+      this.$emit("set-countries", this.scrollableList);
+      this.closePage();
     },
+    closePage() {
+      this.$emit("end-setup");
+    }
   },
 };
 </script>
