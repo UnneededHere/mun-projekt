@@ -24,7 +24,7 @@
     :currentMotion="currentMotion"
   ></Session>
   <Motions
-    :possibleMotions="possibleMotions"
+    :possibleMotions="permittedMotions"
     :presentCountries="presentCountries"
     v-if="!isSession"
     @new-motion="newMotion"
@@ -50,8 +50,8 @@ export default {
     };
   },
   props: {
-    possibleMotions: Array,
     presentCountries: Array,
+    permittedMotions: Array
   },
   methods: {
     switchTab(tabIdenitifier) {

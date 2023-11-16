@@ -4,6 +4,7 @@
 
 <script>
 import total from "./components/BaseInterface.vue";
+import {MotionList} from "./components/Functions.vue";
 
 export default {
   name: "App",
@@ -26,7 +27,7 @@ export default {
           imageSrc: "https://cdn-icons-png.flaticon.com/512/551/551917.png",
         },
       ],
-      motionsList: [
+      motionsList: new MotionList([
         {
           name: "Moderated Caucus",
           description:
@@ -42,7 +43,7 @@ export default {
           description:
             "During a Consultation of the Whole, the floor is open to all delegates, regardless of their committee membership, allowing for diverse perspectives and contributions. This format encourages a more holistic approach to problem-solving and fosters collaboration among delegates representing different countries and interests.",
         },
-      ],
+      ]),
     };
   },
 };

@@ -81,8 +81,8 @@ export default {
       isScrollableListOpen: false,
       scrollableList: [],
       isCheckboxMenuOpen: false,
-      checkboxMenu: this.allMotions,
-      selectedElements: this.allMotions,
+      checkboxMenu: this.allMotions.getMotionNames(),
+      selectedElements: this.allMotions.getMotionNames(),
       newItem: "",
     };
   },
@@ -109,6 +109,7 @@ export default {
       this.isScrollableListOpen = true;
     },
     addItemToList() {
+      console.log("Added country: " + this.newItem);
       this.scrollableList.push(this.newItem);
       this.newItem = ''; // Clear the input field after adding item
     },

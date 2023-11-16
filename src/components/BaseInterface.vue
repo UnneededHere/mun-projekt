@@ -1,12 +1,12 @@
 <template>
   <Interface
-    :possibleMotions="motionsList"
+    :permittedMotions="motionsList"
     :presentCountries="countryList"
     v-if="showMainPage"
   ></Interface>
   <InitialMenu
     :customCountries="allowCustomCountries"
-    :allMotions="allPossibleMotions"
+    :allMotions="possibleMotions"
     v-if="!showMainPage"
     @end-setup="switchPage"
     @set-motions="setMotions"
@@ -21,12 +21,6 @@
     data() {
       return {
         showMainPage: false,
-        allPossibleMotions: [
-          "Moderated Caucus",
-          "Unmoderated Caucus",
-          "Consultation of the Whole",
-          // Unlike lists of nations, we must make this list comprehensive since users cannot define the actual logic behind motions
-        ],
         motionsList: [],
         countryList: [],
         votingCountries: []
@@ -34,6 +28,7 @@
     },
     props: {
       possibleCountries: Array,
+      possibleMotions: window.MotionList,
       allowCustomCountries: Boolean
     },
     methods: {
@@ -42,11 +37,12 @@
       },
       setMotions(motions) {
         this.motionsList = motions.slice();
+        console.log("set motions");
       },
       setCountries(countries) {
         this.countryList = countries.slice();
       }
-    },
+    }
   };
   </script>
   

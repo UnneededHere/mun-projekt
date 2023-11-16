@@ -196,6 +196,9 @@ export default {
         value: country.officialName,
       }));
     },
+    motionNames() {
+      return this.possibleMotions.map((x)=>(x[0]));
+    }
   },
   methods: {
     proposeMotion(motionName) {
